@@ -3,6 +3,7 @@ import time
 from inputimeout import inputimeout
 from threading import Timer
 
+
 class Track:
     def __init__(self, title, duration, artist, album, year, current_time=0.0):
         self.__title = title
@@ -29,6 +30,10 @@ class Track:
                 self.pause(begin_time)
             elif self.__end_command == 'stop' and self.__playing:
                 self.stop()
+            elif self.__end_command == 'next' and self.__playing:
+                self.stop()
+            elif self.__end_command == 'past' and self.__playing:
+                self.stop()
             '''
             command = inputimeout(prompt='¬ведите команду: ', timeout=(self.__duration - self.__current_time))
             try:
@@ -42,6 +47,7 @@ class Track:
                 self.__playing = False
                 self.__current_time = 0.0
                 '''
+
     def pause(self, begin_time):
         print('pause')
         end_time = time.time() - begin_time
@@ -72,6 +78,7 @@ class Track:
     @property
     def playing(self):
         return self.__playing
+
     @playing.setter
     def playing(self, playing):
         self.__playing = playing
@@ -105,6 +112,10 @@ class Album:
             if self.__tracks[i].end_command == 'stop':
                 self.__index_end_track = 0
                 break
+            if self.__tracks[i].end_command == 'past':
+                self.__index_end_track -= 1
+                i -= 1
+
     @property
     def tracks(self):
         return self.__tracks
@@ -118,8 +129,3 @@ album1.add_track(track1)
 album1.add_track(track2)
 i = 0
 album1.play_album()
-
-
-
-
-
