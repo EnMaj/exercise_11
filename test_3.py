@@ -21,10 +21,9 @@ class Track:
         begin_time = time.time()
         while self.__playing:
             print(self.__title)
-            print('command?')
             t = Timer(self.__duration - self.__current_time, lambda: self.stop())
             t.start()
-            self.__end_command = input()
+            self.__end_command = input('command? ')
             t.cancel()
             if self.__end_command == 'pause' and self.__playing:
                 self.pause(begin_time)
@@ -49,13 +48,13 @@ class Track:
                 '''
 
     def pause(self, begin_time):
-        print('pause')
+        print(self.__end_command)
         end_time = time.time() - begin_time
         self.__current_time = self.__duration - end_time
         self.__playing = False
 
     def stop(self):
-        print('stop')
+        print(self.__end_command)
         self.__playing = False
         self.__current_time = 0.0
 
@@ -103,7 +102,8 @@ class Album:
         self.__tracks.remove(track)
 
     def play_album(self):
-        for i in range(self.__index_end_track, len(self.__tracks)):
+        i = self.__index_end_track
+        while i < len(self.__tracks):
             self.__tracks[i].play()
             if not self.__tracks[i].playing:
                 self.__index_end_track = i
@@ -113,8 +113,9 @@ class Album:
                 self.__index_end_track = 0
                 break
             if self.__tracks[i].end_command == 'past':
-                self.__index_end_track -= 1
-                i -= 1
+                self.__index_end_track -= 2
+                i -= 2
+            i += 1
 
     @property
     def tracks(self):
